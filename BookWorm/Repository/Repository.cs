@@ -49,7 +49,7 @@ namespace BookWorm.Repository
             DocumentSession.Delete(model);
         }
 
-        public virtual void Edit<T>(T editedModel)
+        public virtual void Edit<T>(T editedModel) where T : Model<T>
         {
             DocumentSession.Store(editedModel);
         }

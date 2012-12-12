@@ -45,7 +45,7 @@ namespace BookWorm.Repository
             dbSet.Remove(modelToDelete);
         }
 
-        public void Edit<T>(T editedModel)
+        public void Edit<T>(T editedModel) where T : Model<T>
         {
             PukuDbContext.SetModified(editedModel);
         }

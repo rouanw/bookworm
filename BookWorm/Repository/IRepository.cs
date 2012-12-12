@@ -9,6 +9,6 @@ namespace BookWorm.Repository
         T Get<T>(int id) where T : Model<T>;
         ICollection<T> List<T>() where T : Model<T>;
         void Delete<T>(int id) where T : Model<T>;
-        void Edit<T>(T editedModel);
+        void Edit<T>(T editedModel) where T : Model<T>;
     }
 }
