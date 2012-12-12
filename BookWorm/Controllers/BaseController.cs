@@ -19,14 +19,6 @@ namespace BookWorm.Controllers
             _repository = repository;
         }
 
-        protected override void OnActionExecuting(ActionExecutingContext filterContext)
-        {
-
-            var allPages = _repository.List<StaticPage>();
-            ViewBag.StaticPages = allPages;
-            base.OnActionExecuting(filterContext);
-        }
-
         protected virtual IDocumentStore GetDocumentStore()
         {
             return MvcApplication.Store;

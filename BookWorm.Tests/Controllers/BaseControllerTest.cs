@@ -93,22 +93,5 @@ namespace BookWorm.Tests.Controllers
 
             repository.Verify(repo => repo.SaveChanges(), Times.Never());   
         }
-
-        [TestMethod]
-        public void ShouldKnowHowToAddStaticPagesToTheViewBag()
-        {
-            var repository = new Mock<Repository>();
-            var savedPages = new List<StaticPage> 
-                {
-                    new StaticPage { Id = 1, Title = "test title", Content = "Hello\n=====\nWorld" }, 
-                    new StaticPage { Id = 2, Title = "test title2", Content = "Hello\n=====\nAnother World" }
-                };
-            repository.Setup(repo => repo.List<StaticPage>()).Returns(savedPages);
-            var controller = new TestBaseController(repository.Object);
-            repository.Verify(repo => repo.List<StaticPage>(), Times.Never());
-            controller.OnActionExecuting(null);
-            Assert.AreEqual(savedPages, controller.ViewBag.StaticPages);
-            repository.Verify(repo => repo.List<StaticPage>(), Times.Once());
-        }
     }
 }
