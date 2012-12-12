@@ -1,4 +1,6 @@
-﻿using System.Data.Entity;
+﻿using System.Data;
+using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using BookWorm.Models;
 using BookWorm.Repository;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -70,6 +72,19 @@ namespace BookWorm.Tests.Repository
             dbContext.Verify(context => context.GetDbSet<Book>(), Times.Once());
             dbSet.Verify(set=>set.Find(book.Id), Times.Once());
             dbSet.Verify(set=>set.Remove(book), Times.Once());
+        }
+
+        [TestMethod]
+        public void ShouldKnowHowToEditAModelByItsIdWhenItExists()
+        {
+            var book = new Book { Id = 1, Title = "The Book" };
+            var dbContext = new Mock<PukuDbContext>();
+            dbContext.Setup(ctx => ctx.SetModified(book));
+            var efRepo = new EntityFrameworkRepository(dbContext.Object);
+
+            efRepo.Edit(book);
+
+            dbContext.Verify(ctx => ctx.SetModified(book));
         }
 
         [TestMethod]

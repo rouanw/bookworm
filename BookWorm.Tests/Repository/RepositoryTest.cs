@@ -64,6 +64,7 @@ namespace BookWorm.Tests.Repository
             documentSession.Verify(session => session.Delete(persistedModel), Times.Once()); 
         }
 
+        //
         [TestMethod]
         [ExpectedException(typeof(System.InvalidOperationException))]
         public void DeletingNonExistentDocumentShouldRethrowInvalidOperationException()
@@ -91,6 +92,7 @@ namespace BookWorm.Tests.Repository
             documentSession.Verify(session => session.Store(persistedModel), Times.Once());
         }
 
+        //
         [TestMethod]
         [ExpectedException(typeof(System.InvalidOperationException))]
         public void EditingNonExistentDocumentShouldRethrowInvalidOperationException()

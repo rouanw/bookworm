@@ -47,7 +47,7 @@ namespace BookWorm.Repository
 
         public void Edit<T>(T editedModel)
         {
-            throw new NotImplementedException();
+            PukuDbContext.SetModified(editedModel);
         }
     }
 }
