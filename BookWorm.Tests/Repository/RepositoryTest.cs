@@ -37,6 +37,7 @@ namespace BookWorm.Tests.Repository
             Assert.AreEqual(persistedModel.Id , retrievedModel.Id);
         }
 
+        //
         [TestMethod]
         [ExpectedException(typeof(Raven.Client.Exceptions.NonUniqueObjectException))]
         public void ShouldRethrowRavenNonUniqueObjectException()
@@ -54,7 +55,6 @@ namespace BookWorm.Tests.Repository
         [TestMethod]
         public void ShouldKnowHowToDeleteAModelByItsIdWhenItExists()
         {
-
             var persistedModel = new StaticPage { Title = "Nandos Rocks", Id = 1337, Content = "Nandos makes chicken. You're going to love it." };
             var documentSession = new Mock<IDocumentSession>();
             documentSession.Setup(session => session.Load<StaticPage>(persistedModel.Id)).Returns(persistedModel);

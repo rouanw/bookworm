@@ -55,6 +55,24 @@ namespace BookWorm.Tests.Repository
         }
 
         [TestMethod]
+        public void ShouldKnowHowToDeleteAModelByItsIdWhenItExists()
+        {
+            var book = new Book {Id = 1, Title = "The Book"};
+            var dbContext = new Mock<PukuDbContext>();
+            var dbSet = new Mock<IDbSet<Book>>();
+            dbSet.Setup(set => set.Find(book.Id)).Returns(book);
+            dbSet.Setup(set => set.Remove(book));
+            dbContext.Setup(context => context.GetDbSet<Book>()).Returns(dbSet.Object);
+            var efRepo = new EntityFrameworkRepository(dbContext.Object);
+
+            efRepo.Delete<Book>(book.Id);
+
+            dbContext.Verify(context => context.GetDbSet<Book>(), Times.Once());
+            dbSet.Verify(set=>set.Find(book.Id), Times.Once());
+            dbSet.Verify(set=>set.Remove(book), Times.Once());
+        }
+
+        [TestMethod]
         public void ShouldKnowToInstantiateContext()
         {
             var dbSet = new Mock<IDbSet<Book>>();

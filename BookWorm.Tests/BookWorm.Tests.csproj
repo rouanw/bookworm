@@ -181,11 +181,6 @@
     <Compile Include="Repository\EntityFrameworkRepositoryTest.cs" />
     <Compile Include="Specs\Pages\LoginPage.cs" />
     <Compile Include="Specs\Pages\HomePage.cs" />
-    <Compile Include="Specs\Login.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Login.feature</DependentUpon>
-    </Compile>
     <Compile Include="Specs\LoginSteps.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -195,10 +190,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="Specs\Login.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Login.feature.cs</LastGenOutput>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BookWorm\BookWorm.csproj">

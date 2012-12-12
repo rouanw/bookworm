@@ -40,7 +40,9 @@ namespace BookWorm.Repository
 
         public void Delete<T>(int id) where T : Model<T>
         {
-            throw new NotImplementedException();
+            var dbSet = PukuDbContext.GetDbSet<T>();
+            var modelToDelete = dbSet.Find(id);
+            dbSet.Remove(modelToDelete);
         }
 
         public void Edit<T>(T editedModel)
