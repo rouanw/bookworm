@@ -1,5 +1,4 @@
 ﻿using System.Web.Mvc;
-using BookWorm.Models;
 using BookWorm.Repository;
 using Ninject;
 using Raven.Client;
