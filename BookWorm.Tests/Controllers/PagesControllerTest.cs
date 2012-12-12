@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web.Mvc;
 using BookWorm.Controllers;
 using BookWorm.Models;
+using BookWorm.Repository;
 using MarkdownSharp;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -27,7 +28,7 @@ namespace BookWorm.Tests.Controllers
         [TestMethod]
         public void ShouldStorePageWhenCreated()
         {
-            var repository = new Mock<Repository.Repository>();
+            var repository = new Mock<IRepository>();
             var submittedPage = new StaticPage { Title = "test title", Content = "some content" };
             repository.Setup(repo => repo.Create(submittedPage)).Returns(new StaticPage { Id = 1, Title = submittedPage.Title, Content = submittedPage.Content });
             var controller = new PagesController(repository.Object);
@@ -40,7 +41,7 @@ namespace BookWorm.Tests.Controllers
         [TestMethod]
         public void ShouldNotStorePageWhenTitleIsInvalid()
         {
-            var repository = new Mock<Repository.Repository>();
+            var repository = new Mock<IRepository>();
             var submittedPage = new StaticPage { Title = "", Content = "some content" };
             repository.Setup(repo => repo.Create(submittedPage)).Returns(submittedPage);
             
@@ -52,7 +53,7 @@ namespace BookWorm.Tests.Controllers
         [TestMethod]
         public void ShouldNotStorePageWhenContentIsInvalid()
         {
-            var repository = new Mock<Repository.Repository>();
+            var repository = new Mock<IRepository>();
             var submittedPage = new StaticPage { Title = "test title", Content = "" };
             repository.Setup(repo => repo.Create(submittedPage)).Returns(submittedPage);
 
@@ -64,7 +65,7 @@ namespace BookWorm.Tests.Controllers
         [TestMethod]
         public void ShouldHandleDuplicatePageProblem()
         {
-            var repository = new Mock<Repository.Repository>();
+            var repository = new Mock<IRepository>();
             var duplicatePage = new StaticPage { Title = "test title", Content = "test content" };
             repository.Setup(repo => repo.Create(duplicatePage))
                       .Throws(new Raven.Client.Exceptions.NonUniqueObjectException());
@@ -78,7 +79,7 @@ namespace BookWorm.Tests.Controllers
         [TestMethod]
         public void ShouldDisplayFormForNewPage()
         {
-            var repository = new Mock<Repository.Repository>();
+            var repository = new Mock<IRepository>();
             var controller = new PagesController(repository.Object);
             var result = (ViewResult)controller.Create();
             Assert.AreEqual("Create", result.ViewName);
@@ -88,7 +89,7 @@ namespace BookWorm.Tests.Controllers
         public void ShouldKnowHowToDisplayAPage()
         {
             var id = 12;
-            var repository = new Mock<Repository.Repository>();
+            var repository = new Mock<IRepository>();
             var savedPage = new StaticPage { Id = id, Title = "test title", Content = "some content" };
             repository.Setup(repo => repo.Get<StaticPage>(id)).Returns(savedPage);
             var controller = new PagesController(repository.Object);
@@ -101,7 +102,7 @@ namespace BookWorm.Tests.Controllers
         public void ShouldKnowToRenderThePageContentAsMarkdown()
         {
             var id = 12;
-            var repository = new Mock<Repository.Repository>();
+            var repository = new Mock<IRepository>();
             var markdown = new Markdown();
             var savedPage = new StaticPage { Id = id, Title = "test title", Content = "Hello\n=====\nWorld" };
             repository.Setup(repo => repo.Get<StaticPage>(id)).Returns(savedPage);
@@ -114,7 +115,7 @@ namespace BookWorm.Tests.Controllers
         [TestMethod]
         public void ShouldKnowHowToListAllPages()
         {
-            var repository = new Mock<Repository.Repository>();
+            var repository = new Mock<IRepository>();
             var savedPages = new List<StaticPage> 
                 {
                     new StaticPage { Id = 1, Title = "test title", Content = "Hello\n=====\nWorld" }, 
@@ -131,7 +132,7 @@ namespace BookWorm.Tests.Controllers
         public void ShouldKnowHowToDeletePage()
         {
             var id = 1;
-            var repository = new Mock<Repository.Repository>();
+            var repository = new Mock<IRepository>();
             var controller = new PagesController(repository.Object);
             var result = (RedirectToRouteResult)controller.Delete(id);
             repository.Verify(it => it.Delete<StaticPage>(id), Times.Once());
@@ -142,7 +143,7 @@ namespace BookWorm.Tests.Controllers
         [TestMethod]
         public void ShouldKnowHowToRenderAnEditPage()
         {
-            var repositoryMock = new Mock<Repository.Repository>();
+            var repositoryMock = new Mock<IRepository>();
             var page = new StaticPage {Id = 1, Title = "The Page"};
             repositoryMock.Setup(repo => repo.Get<StaticPage>(page.Id)).Returns(page);
             var pagesController = new PagesController(repositoryMock.Object);
@@ -157,7 +158,7 @@ namespace BookWorm.Tests.Controllers
         [TestMethod]
         public void ShouldKnowHowToUpdateAPage()
         {
-            var repository = new Mock<Repository.Repository>();
+            var repository = new Mock<IRepository>();
             var existingPage = new StaticPage {Id = 1, Title = "Derping for dummies."};
             repository.Setup(repo => repo.Edit(existingPage));
             var pagesController = new PagesController(repository.Object);

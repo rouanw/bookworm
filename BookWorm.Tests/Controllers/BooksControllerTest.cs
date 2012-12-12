@@ -3,6 +3,7 @@ using System.Linq;
 using System.Web.Mvc;
 using BookWorm.Controllers;
 using BookWorm.Models;
+using BookWorm.Repository;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -28,7 +29,7 @@ namespace BookWorm.Tests.Controllers
         {
             var book = new Book { Title = "The Book" };
 
-            var mockedRepo = new Mock<Repository.Repository>();
+            var mockedRepo = new Mock<IRepository>();
             mockedRepo.Setup(repo => repo.Create(book)).Returns(new Book { Id = 1, Title = "The Book"});
             var booksController = new BooksController(mockedRepo.Object);
 
@@ -43,7 +44,7 @@ namespace BookWorm.Tests.Controllers
         public void ShouldUseRepositoryWhenCreatingABook()
         {
             var book = new Book();
-            var mockedRepo = new Mock<Repository.Repository>();
+            var mockedRepo = new Mock<IRepository>();
             mockedRepo.Setup(repo => repo.Create(book)).Returns(new Book());
 
             var booksController = new BooksController(mockedRepo.Object);
@@ -56,7 +57,7 @@ namespace BookWorm.Tests.Controllers
         public void CreateBookShouldNotSaveWhenBookIsInvalid()
         {
             var book = new Book();
-            var mockedRepo = new Mock<Repository.Repository>();
+            var mockedRepo = new Mock<IRepository>();
             var booksController = new BooksController(mockedRepo.Object);
             mockedRepo.Setup(repo => repo.Create(book)).Returns(book);
             booksController.ModelState.AddModelError("test error","test exception");
@@ -71,7 +72,7 @@ namespace BookWorm.Tests.Controllers
         public void ShouldDisplayBookDetails()
         {
             var book = new Book {Id = 1, Title = "A book"};
-            var mockedRepo = new Mock<Repository.Repository>();
+            var mockedRepo = new Mock<IRepository>();
             mockedRepo.Setup(repo => repo.Get<Book>(book.Id)).Returns(book);
             var booksController = new BooksController(mockedRepo.Object);
 
@@ -88,7 +89,7 @@ namespace BookWorm.Tests.Controllers
         {
             var books = new List<Book>();
             Enumerable.Range(1, 10).ToList().ForEach(i=>books.Add(new Book{Id = i}));
-            var mockedRepo = new Mock<Repository.Repository>();
+            var mockedRepo = new Mock<IRepository>();
             mockedRepo.Setup(repo => repo.List<Book>()).Returns(books);
             var booksController = new BooksController(mockedRepo.Object);
 
@@ -103,7 +104,7 @@ namespace BookWorm.Tests.Controllers
         public void ShouldReturnEditPageOnGetEdit()
         {
             var book = new Book { Id = 1, Title = "A book" };
-            var mockedRepo = new Mock<Repository.Repository>();
+            var mockedRepo = new Mock<IRepository>();
             mockedRepo.Setup(repo => repo.Get<Book>(book.Id)).Returns(book);
             var booksController = new BooksController(mockedRepo.Object);
 
@@ -118,7 +119,7 @@ namespace BookWorm.Tests.Controllers
         public void ShouldReturnDetailsPageOnGetDetails()
         {
             var book = new Book { Id = 1, Title = "A book" };
-            var mockedRepo = new Mock<Repository.Repository>();
+            var mockedRepo = new Mock<IRepository>();
             mockedRepo.Setup(repo => repo.Get<Book>(book.Id)).Returns(book);
             var booksController = new BooksController(mockedRepo.Object);
 
@@ -133,7 +134,7 @@ namespace BookWorm.Tests.Controllers
         public void ShouldUpdateBookOnEditPost()
         {
             var editedBook = new Book { Id = 1, Title = "A book" };
-            var mockedRepo = new Mock<Repository.Repository>();
+            var mockedRepo = new Mock<IRepository>();
             mockedRepo.Setup(repo => repo.Edit(editedBook));
             var booksController = new BooksController(mockedRepo.Object);
 
@@ -149,7 +150,7 @@ namespace BookWorm.Tests.Controllers
         public void EditBookShouldNotSaveWhenBookIsInvalid()
         {
             var book = new Book();
-            var mockedRepo = new Mock<Repository.Repository>();
+            var mockedRepo = new Mock<IRepository>();
             var booksController = new BooksController(mockedRepo.Object);
             mockedRepo.Setup(repo => repo.Edit(book));
             booksController.ModelState.AddModelError("test error", "test exception");
@@ -163,7 +164,7 @@ namespace BookWorm.Tests.Controllers
         [TestMethod]
         public void ShouldDeleteBookAndShowListOfBooks()
         {
-            var mockedRepo = new Mock<Repository.Repository>();
+            var mockedRepo = new Mock<IRepository>();
             mockedRepo.Setup(repo => repo.Delete<Book>(1));
             var booksController = new BooksController(mockedRepo.Object);
 

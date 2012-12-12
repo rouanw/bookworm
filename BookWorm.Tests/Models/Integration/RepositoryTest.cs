@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using BookWorm.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Raven.Client;
@@ -47,7 +45,7 @@ namespace BookWorm.Tests.Models.Integration
 
             using (var session = _documentStore.OpenSession())
             {
-                var repo = new Repository.Repository(session);
+                var repo = new BookWorm.Repository.Repository(session);
                 var retrievedBooks = repo.List<Book>();
 
                 Assert.AreEqual(books.Count, retrievedBooks.Count);

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Web.Mvc;
 using BookWorm.Controllers;
-using BookWorm.Models;
+using BookWorm.Repository;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Raven.Client;
@@ -13,11 +13,11 @@ namespace BookWorm.Tests.Controllers
     {
         private IDocumentStore _documentStore;
 
-        public TestBaseController(IDocumentStore documentStore, Repository.Repository repository) :base(repository)
+        public TestBaseController(IDocumentStore documentStore, IRepository repository) :base(repository)
         {
             _documentStore = documentStore;
         }
-        public TestBaseController(Repository.Repository repository) : base(repository)
+        public TestBaseController(IRepository repository) : base(repository)
         {
         }
 
@@ -49,7 +49,7 @@ namespace BookWorm.Tests.Controllers
         [TestMethod]
         public void ShouldKnowToNotSaveChangesOnActionExecutedWhenRunOnChildAction()
         {
-            var repository = new Mock<Repository.Repository>();
+            var repository = new Mock<IRepository>();
             repository.Setup(repo => repo.SaveChanges());
             var documentStore = new Mock<IDocumentStore>();
   
@@ -67,7 +67,7 @@ namespace BookWorm.Tests.Controllers
         [TestMethod]
         public void ShouldKnowToNotSaveChangesOnActionExecutedWhenExceptionPresentInContext()
         {
-            var repository = new Mock<Repository.Repository>();
+            var repository = new Mock<IRepository>();
             repository.Setup(repo => repo.SaveChanges());
             var documentStore = new Mock<IDocumentStore>();
             var testBaseController = new TestBaseController(documentStore.Object, repository.Object);
