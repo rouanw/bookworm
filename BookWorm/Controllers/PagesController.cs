@@ -1,5 +1,6 @@
 ﻿using System.Web.Mvc;
 using BookWorm.Models;
+using BookWorm.Repository;
 using MarkdownSharp;
 using Raven.Client.Exceptions;
 

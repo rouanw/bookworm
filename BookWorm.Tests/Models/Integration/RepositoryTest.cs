@@ -47,7 +47,7 @@ namespace BookWorm.Tests.Models.Integration
 
             using (var session = _documentStore.OpenSession())
             {
-                var repo = new Repository(session);
+                var repo = new Repository.Repository(session);
                 var retrievedBooks = repo.List<Book>();
 
                 Assert.AreEqual(books.Count, retrievedBooks.Count);

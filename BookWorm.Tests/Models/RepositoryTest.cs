@@ -18,7 +18,7 @@ namespace BookWorm.Tests.Models
 
             documentSession.Setup(session => session.Store(testModel)).Callback<object>(arg => testModel.Id = 1);
 
-            var repository = new Repository(documentSession.Object);
+            var repository = new Repository.Repository(documentSession.Object);
             repository.Create(testModel);
 
             documentSession.Verify(session => session.Store(testModel), Times.Once());
@@ -32,7 +32,7 @@ namespace BookWorm.Tests.Models
             var documentSession = new Mock<IDocumentSession>();
 
             documentSession.Setup(session => session.Load<StaticPage>(persistedModel.Id)).Returns(persistedModel);
-            var repository = new Repository(documentSession.Object);
+            var repository = new Repository.Repository(documentSession.Object);
             var retrievedModel = repository.Get<StaticPage>(persistedModel.Id);
 
             documentSession.Verify(session=>session.Load<StaticPage>(persistedModel.Id), Times.Once());
@@ -49,7 +49,7 @@ namespace BookWorm.Tests.Models
             documentSession.Setup(session => session.Store(testModel))
                            .Throws(new Raven.Client.Exceptions.NonUniqueObjectException());
 
-            var repository = new Repository(documentSession.Object);
+            var repository = new Repository.Repository(documentSession.Object);
             repository.Create(testModel);
         }
 
@@ -60,7 +60,7 @@ namespace BookWorm.Tests.Models
             var persistedModel = new StaticPage { Title = "Nandos Rocks", Id = 1337, Content = "Nandos makes chicken. You're going to love it." };
             var documentSession = new Mock<IDocumentSession>();
             documentSession.Setup(session => session.Load<StaticPage>(persistedModel.Id)).Returns(persistedModel);
-            var repository = new Repository(documentSession.Object);
+            var repository = new Repository.Repository(documentSession.Object);
 
             repository.Delete<StaticPage>(persistedModel.Id);
             documentSession.Verify(session => session.Delete(persistedModel), Times.Once()); 
@@ -76,7 +76,7 @@ namespace BookWorm.Tests.Models
             documentSession.Setup(session => session.Delete(persistedModel))
                            .Throws(new System.InvalidOperationException());
 
-            var repository = new Repository(documentSession.Object);
+            var repository = new Repository.Repository(documentSession.Object);
             repository.Delete<StaticPage>(persistedModel.Id);
         }
 
@@ -86,7 +86,7 @@ namespace BookWorm.Tests.Models
             var persistedModel = new StaticPage { Title = "Nandos Rocks", Id = 1337, Content = "Nandos makes chicken. You're going to love it." };
             var documentSession = new Mock<IDocumentSession>();
             documentSession.Setup(session => session.Load<StaticPage>(persistedModel.Id)).Returns(persistedModel);
-            var repository = new Repository(documentSession.Object);
+            var repository = new Repository.Repository(documentSession.Object);
 
             repository.Edit<StaticPage>(persistedModel);
 
@@ -103,7 +103,7 @@ namespace BookWorm.Tests.Models
             documentSession.Setup(session => session.Store(persistedModel))
                            .Throws(new System.InvalidOperationException());
 
-            var repository = new Repository(documentSession.Object);
+            var repository = new Repository.Repository(documentSession.Object);
             repository.Edit<StaticPage>(persistedModel);
         }
 
@@ -114,7 +114,7 @@ namespace BookWorm.Tests.Models
             var documentStore = new Mock<IDocumentStore>();
             documentStore.Setup(store => store.OpenSession()).Returns(documentSession.Object);
 
-            var repo = new Repository(documentSession.Object);
+            var repo = new Repository.Repository(documentSession.Object);
 
             repo.SaveChanges();
 
@@ -136,7 +136,7 @@ namespace BookWorm.Tests.Models
             documentStore.Verify(store => store.OpenSession(), Times.Once());
         }
 
-        public class TestRepository : Repository 
+        public class TestRepository : Repository.Repository 
         {
             private readonly IDocumentStore _documentStore;
 

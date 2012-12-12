@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Web.Mvc;
 using BookWorm.Models;
+using BookWorm.Repository;
 
 namespace BookWorm.Controllers
 {

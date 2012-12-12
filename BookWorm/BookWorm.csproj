@@ -240,11 +240,11 @@
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\Book.cs" />
-    <Compile Include="Models\IRepository.cs" />
     <Compile Include="Models\StaticPage.cs" />
     <Compile Include="Models\Validations\ValidLanguage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Models\Repository.cs" />
+    <Compile Include="Repository\IRepository.cs" />
+    <Compile Include="Repository\Repository.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\markdown.css" />
@@ -375,7 +375,6 @@
     <Folder Include="App_Data\" />
     <Folder Include="Filters\" />
     <Folder Include="Helpers\" />
-    <Folder Include="Repository\" />
     <Folder Include="Views\Shared\Home\" />
   </ItemGroup>
   <ItemGroup>

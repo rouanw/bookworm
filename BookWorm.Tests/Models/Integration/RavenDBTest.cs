@@ -1,4 +1,5 @@
 ﻿using BookWorm.Models;
+using BookWorm.Repository;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Raven.Client;
 using Raven.Client.Embedded;

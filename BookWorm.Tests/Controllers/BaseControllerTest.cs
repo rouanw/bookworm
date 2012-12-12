@@ -13,11 +13,11 @@ namespace BookWorm.Tests.Controllers
     {
         private IDocumentStore _documentStore;
 
-        public TestBaseController(IDocumentStore documentStore, Repository repository) :base(repository)
+        public TestBaseController(IDocumentStore documentStore, Repository.Repository repository) :base(repository)
         {
             _documentStore = documentStore;
         }
-        public TestBaseController(Repository repository) : base(repository)
+        public TestBaseController(Repository.Repository repository) : base(repository)
         {
         }
 
@@ -49,7 +49,7 @@ namespace BookWorm.Tests.Controllers
         [TestMethod]
         public void ShouldKnowToNotSaveChangesOnActionExecutedWhenRunOnChildAction()
         {
-            var repository = new Mock<Repository>();
+            var repository = new Mock<Repository.Repository>();
             repository.Setup(repo => repo.SaveChanges());
             var documentStore = new Mock<IDocumentStore>();
   
@@ -67,7 +67,7 @@ namespace BookWorm.Tests.Controllers
         [TestMethod]
         public void ShouldKnowToNotSaveChangesOnActionExecutedWhenExceptionPresentInContext()
         {
-            var repository = new Mock<Repository>();
+            var repository = new Mock<Repository.Repository>();
             repository.Setup(repo => repo.SaveChanges());
             var documentStore = new Mock<IDocumentStore>();
             var testBaseController = new TestBaseController(documentStore.Object, repository.Object);

@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using BookWorm.Repository;
 
 namespace BookWorm.Models
 {

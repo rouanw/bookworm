@@ -1,4 +1,5 @@
 using BookWorm.Models;
+using BookWorm.Repository;
 
 [assembly: WebActivator.PreApplicationStartMethod(typeof(BookWorm.App_Start.NinjectWebCommon), "Start")]
 [assembly: WebActivator.ApplicationShutdownMethodAttribute(typeof(BookWorm.App_Start.NinjectWebCommon), "Stop")]
@@ -55,7 +56,7 @@ namespace BookWorm.App_Start
         /// <param name="kernel">The kernel.</param>s
         private static void RegisterServices(IKernel kernel)
         {
-            kernel.Bind<IRepository>().To<Repository>().InRequestScope();
+            kernel.Bind<IRepository>().To<Repository.Repository>().InRequestScope();
         }        
     }
 }

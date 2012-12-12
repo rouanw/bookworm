@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
-using Raven.Client;
+using System.Collections.Generic;
 
-namespace BookWorm.Models
+namespace BookWorm.Repository
 {
     public interface IRepository
     {
