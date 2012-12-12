@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 
 namespace BookWorm.Repository
 {
@@ -31,7 +30,7 @@ namespace BookWorm.Repository
 
         public T Get<T>(int id) where T : Model<T>
         {
-            throw new NotImplementedException();
+            return PukuDbContext.GetDbSet<T>().Find(id);
         }
 
         public ICollection<T> List<T>() where T : Model<T>

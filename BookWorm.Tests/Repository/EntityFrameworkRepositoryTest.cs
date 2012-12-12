@@ -39,6 +39,22 @@ namespace BookWorm.Tests.Repository
         }
 
         [TestMethod]
+        public void ShouldKnowHowToGetModelFromTheirId()
+        {
+            var book = new Book {Id = 1, Title = "The Book"};
+            var dbContext = new Mock<PukuDbContext>();
+            var dbSet = new Mock<IDbSet<Book>>();
+            dbSet.Setup(set => set.Find(1)).Returns(book);
+            dbContext.Setup(context => context.GetDbSet<Book>()).Returns(dbSet.Object);
+            var efRepo = new EntityFrameworkRepository(dbContext.Object);
+
+            var foundBook = efRepo.Get<Book>(1);
+            Assert.AreEqual(book, foundBook);
+            dbContext.Verify(context => context.GetDbSet<Book>(), Times.Once());
+            dbSet.Verify(set => set.Find(1), Times.Once());
+        }
+
+        [TestMethod]
         public void ShouldKnowToInstantiateContext()
         {
             var dbSet = new Mock<IDbSet<Book>>();
