@@ -46,20 +46,6 @@ namespace BookWorm.Tests.Controllers
     [TestClass]
     public class BaseControllerTest
     {
-//        [TestMethod]
-//        public void ShouldKnowToOpenSessionOnActionExecuting()
-//        {
-//            var documentSession = new Mock<IDocumentSession>();
-//            documentSession.Setup(session => session.SaveChanges());
-//            var documentStore = new Mock<IDocumentStore>();
-//            documentStore.Setup(store => store.OpenSession()).Returns(documentSession.Object);
-//            var testBaseController = new TestBaseController(documentStore.Object, new Mock<Repository>().Object);
-//            testBaseController.OnActionExecuting(null);
-//            documentStore.Verify(store => store.OpenSession(), Times.Once());
-//        }
-//
-//
-
         [TestMethod]
         public void ShouldKnowToNotSaveChangesOnActionExecutedWhenRunOnChildAction()
         {
