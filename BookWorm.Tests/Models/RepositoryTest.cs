@@ -1,4 +1,6 @@
-﻿using BookWorm.Models;
+﻿using System.Web.Mvc;
+using BookWorm.Models;
+using BookWorm.Tests.Controllers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Raven.Client;
@@ -105,5 +107,48 @@ namespace BookWorm.Tests.Models
             repository.Edit<StaticPage>(persistedModel);
         }
 
+        [TestMethod]
+        public void ShouldKnowToSaveChangesOnDispose()
+        {
+            var documentSession = new Mock<IDocumentSession>();
+            var documentStore = new Mock<IDocumentStore>();
+            documentStore.Setup(store => store.OpenSession()).Returns(documentSession.Object);
+
+            var repo = new Repository(documentSession.Object);
+
+            repo.SaveChanges();
+
+            documentSession.Verify(session => session.SaveChanges(), Times.Once());
+        }
+
+        [TestMethod]
+        public void ShouldKnowToOpenSessionOnceOnly()
+        {
+            var book = new Book();
+            var documentSession = new Mock<IDocumentSession>();
+            documentSession.Setup(session => session.Store(book));
+            var documentStore = new Mock<IDocumentStore>();
+            documentStore.Setup(store => store.OpenSession()).Returns(documentSession.Object);
+
+            var repository = new TestRepository(documentStore.Object);
+            repository.Create(book);
+
+            documentStore.Verify(store => store.OpenSession(), Times.Once());
+        }
+
+        public class TestRepository : Repository 
+        {
+            private readonly IDocumentStore _documentStore;
+
+            public TestRepository(IDocumentStore documentStore)
+            {
+                _documentStore = documentStore;
+            }
+
+            protected override IDocumentStore GetDocumentStore()
+            {
+                return _documentStore;
+            }
+        }
     }
 }

@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Raven.Client;
+using Raven.Client.Document;
 
 namespace BookWorm.Models
 {
@@ -17,41 +19,49 @@ namespace BookWorm.Models
             _documentSession = documentSession;
         }
 
-        public virtual Model<T> Create<T>(T model) where T : Model<T>
+        private IDocumentSession DocumentSession
         {
-            _documentSession.Store(model);
-            return model;
+            get { return _documentSession ?? (_documentSession = GetDocumentStore().OpenSession()); }
         }
 
-        public void Dispose()
+        protected virtual IDocumentStore GetDocumentStore()
         {
-            _documentSession.Dispose();
+            return MvcApplication.Store;
+        }
+
+        public virtual Model<T> Create<T>(T model) where T : Model<T>
+        {
+            DocumentSession.Store(model);
+            return model;
         }
 
         public virtual T Get<T>(int id) where T : Model<T>
         {
-            return _documentSession.Load<T>(id);
+            return DocumentSession.Load<T>(id);
         }
 
         public virtual ICollection<T> List<T>() where T : Model<T>
         {
-            return _documentSession.Query<T>().ToList();
+            return DocumentSession.Query<T>().ToList();
         }
 
         public virtual void Delete<T>(int id) where T : Model<T>
         {
             var model = Get<T>(id);
-            _documentSession.Delete(model);
+            DocumentSession.Delete(model);
         }
 
         public virtual void Edit<T>(T editedModel)
         {
-            _documentSession.Store(editedModel);
+            DocumentSession.Store(editedModel);
         }
 
-        public void SetSession(IDocumentSession session)
+        public virtual void SaveChanges()
         {
-            _documentSession = session;
+            if (_documentSession != null)
+            {
+                _documentSession.SaveChanges();
+            }
         }
     }
 
