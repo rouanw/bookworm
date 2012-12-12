@@ -1,16 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Web;
 
 namespace BookWorm.Repository
 {
     public class EntityFrameworkRepository : IRepository
     {
+        private PukuDbContext _pukuDbContext;
+
+        public EntityFrameworkRepository(PukuDbContext pukuDbContext)
+        {
+            _pukuDbContext = pukuDbContext;
+        }
+
         public Model<T> Create<T>(T model) where T : Model<T>
         {
-            throw new NotImplementedException();
+            return _pukuDbContext.GetDbSet<T>().Add(model);
         }
 
         public void SaveChanges()
