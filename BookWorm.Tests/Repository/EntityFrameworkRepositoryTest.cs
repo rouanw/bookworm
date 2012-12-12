@@ -37,5 +37,32 @@ namespace BookWorm.Tests.Repository
 
             dbContext.Verify(context => context.SaveChanges(), Times.Once());
         }
+
+        [TestMethod]
+        public void ShouldKnowToInstantiateContext()
+        {
+            var dbSet = new Mock<IDbSet<Book>>();
+            var dbContext = new Mock<PukuDbContext>();
+            dbContext.Setup(ctx => ctx.GetDbSet<Book>()).Returns(dbSet.Object);
+
+            var efRepo = new TestRepository();
+
+            Assert.IsNull(efRepo.GetContextInstance());
+            efRepo.DoStuffThatUsesContextPropery();
+            Assert.IsNotNull(efRepo.GetContextInstance());
+        }
+
+        public class TestRepository : EntityFrameworkRepository
+        {
+            public DbContext GetContextInstance()
+            {
+                return _pukuDbContext;
+            }
+
+            public void DoStuffThatUsesContextPropery()
+            {
+                var stuff = PukuDbContext;
+            }
+        }
     }
 }

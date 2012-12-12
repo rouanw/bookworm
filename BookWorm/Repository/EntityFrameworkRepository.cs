@@ -1,11 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 
 namespace BookWorm.Repository
 {
     public class EntityFrameworkRepository : IRepository
     {
-        private PukuDbContext _pukuDbContext;
+        protected PukuDbContext _pukuDbContext;
+        public PukuDbContext PukuDbContext { get { return _pukuDbContext ?? (_pukuDbContext = new PukuDbContext()); } }
+
+        public EntityFrameworkRepository()
+        {
+        
+        }
 
         public EntityFrameworkRepository(PukuDbContext pukuDbContext)
         {
@@ -14,12 +21,12 @@ namespace BookWorm.Repository
 
         public Model<T> Create<T>(T model) where T : Model<T>
         {
-            return _pukuDbContext.GetDbSet<T>().Add(model);
+            return PukuDbContext.GetDbSet<T>().Add(model);
         }
 
         public void SaveChanges()
         {
-            _pukuDbContext.SaveChanges();
+            PukuDbContext.SaveChanges();
         }
 
         public T Get<T>(int id) where T : Model<T>
