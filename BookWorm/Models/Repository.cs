@@ -4,9 +4,9 @@ using Raven.Client;
 
 namespace BookWorm.Models
 {
-    public class Repository
+    public class Repository : IRepository
     {
-        private readonly IDocumentSession _documentSession;
+        private IDocumentSession _documentSession;
 
         public Repository()
         {
@@ -47,6 +47,11 @@ namespace BookWorm.Models
         public virtual void Edit<T>(T editedModel)
         {
             _documentSession.Store(editedModel);
+        }
+
+        public void SetSession(IDocumentSession session)
+        {
+            _documentSession = session;
         }
     }
 

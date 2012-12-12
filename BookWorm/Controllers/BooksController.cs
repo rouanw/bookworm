@@ -11,7 +11,7 @@ namespace BookWorm.Controllers
         {
         }
 
-        public BooksController(Repository repository) : base (repository)
+        public BooksController(IRepository repository) : base (repository)
         {
         }
 

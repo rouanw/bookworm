@@ -13,7 +13,7 @@ namespace BookWorm.Tests.Controllers
     {
         private IDocumentStore _documentStore;
 
-        public TestBaseController(IDocumentStore documentStore)
+        public TestBaseController(IDocumentStore documentStore, Repository repository) :base(repository)
         {
             _documentStore = documentStore;
         }
@@ -54,7 +54,7 @@ namespace BookWorm.Tests.Controllers
             documentSession.Setup(session => session.SaveChanges());
             var documentStore = new Mock<IDocumentStore>();
             documentStore.Setup(store => store.OpenSession()).Returns(documentSession.Object);
-            var testBaseController = new TestBaseController(documentStore.Object);
+            var testBaseController = new TestBaseController(documentStore.Object, new Mock<Repository>().Object);
             testBaseController.OnActionExecuting(null);
             documentStore.Verify(store => store.OpenSession(), Times.Once());
         }
@@ -66,7 +66,7 @@ namespace BookWorm.Tests.Controllers
             var documentStore = new Mock<IDocumentStore>();
             documentStore.Setup(store => store.OpenSession()).Returns(documentSession.Object);
 
-            var testBaseController = new TestBaseController(documentStore.Object);
+            var testBaseController = new TestBaseController(documentStore.Object, new Mock<Repository>().Object);
             testBaseController.OnActionExecuting(null);
             
             var actionExecutedContext = new Mock<ActionExecutedContext>();
@@ -86,7 +86,7 @@ namespace BookWorm.Tests.Controllers
             var documentStore = new Mock<IDocumentStore>();
             documentStore.Setup(store => store.OpenSession()).Returns(documentSession.Object);
 
-            var testBaseController = new TestBaseController(documentStore.Object);
+            var testBaseController = new TestBaseController(documentStore.Object, new Mock<Repository>().Object);
             testBaseController.OnActionExecuting(null);
 
             var actionExecutedContext = new Mock<ActionExecutedContext>();
@@ -106,7 +106,7 @@ namespace BookWorm.Tests.Controllers
             var documentStore = new Mock<IDocumentStore>();
             documentStore.Setup(store => store.OpenSession()).Returns(documentSession.Object);
 
-            var testBaseController = new TestBaseController(documentStore.Object);
+            var testBaseController = new TestBaseController(documentStore.Object, new Mock<Repository>().Object);
             testBaseController.OnActionExecuting(null);
 
             var actionExecutedContext = new Mock<ActionExecutedContext>();

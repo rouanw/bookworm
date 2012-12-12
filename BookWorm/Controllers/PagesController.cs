@@ -12,7 +12,7 @@ namespace BookWorm.Controllers
         {
         }
 
-        public PagesController(Repository repository) : base(repository)
+        public PagesController(IRepository repository) : base(repository)
         {
         }
 
