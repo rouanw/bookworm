@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Data.Entity;
-using BookWorm.Models;
 
 namespace BookWorm.Repository
 {
