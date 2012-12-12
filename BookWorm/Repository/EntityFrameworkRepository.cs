@@ -19,7 +19,7 @@ namespace BookWorm.Repository
 
         public void SaveChanges()
         {
-            throw new NotImplementedException();
+            _pukuDbContext.SaveChanges();
         }
 
         public T Get<T>(int id) where T : Model<T>

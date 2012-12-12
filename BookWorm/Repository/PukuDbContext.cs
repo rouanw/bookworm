@@ -3,7 +3,7 @@ using System.Data.Entity;
 
 namespace BookWorm.Repository
 {
-    public class PukuDbContext
+    public class PukuDbContext : DbContext
     {
         public virtual IDbSet<T> GetDbSet<T>() where T : Model<T>
         {

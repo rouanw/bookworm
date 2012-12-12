@@ -25,5 +25,17 @@ namespace BookWorm.Tests.Repository
             dbContext.Verify(context => context.GetDbSet<Book>(), Times.Once());
             dbSet.Verify(set => set.Add(newBook), Times.Once());
         }
+
+        [TestMethod]
+        public void ShouldKnowToTalkToContextToSaveChanges()
+        {
+            var dbContext = new Mock<PukuDbContext>();
+            dbContext.Setup(context => context.SaveChanges());
+            var efRepo = new EntityFrameworkRepository(dbContext.Object);
+
+            efRepo.SaveChanges();
+
+            dbContext.Verify(context => context.SaveChanges(), Times.Once());
+        }
     }
 }

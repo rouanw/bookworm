@@ -106,7 +106,7 @@ namespace BookWorm.Tests.Repository
         }
 
         [TestMethod]
-        public void ShouldKnowToSaveChangesOnDispose()
+        public void ShouldKnowToTalkToSessionToSaveChanges()
         {
             var documentSession = new Mock<IDocumentSession>();
             var documentStore = new Mock<IDocumentStore>();
