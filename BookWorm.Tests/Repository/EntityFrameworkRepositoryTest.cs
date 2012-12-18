@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Data.Common;
-using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
-using System.Linq.Expressions;
+﻿using System.Data.Entity;
 using BookWorm.Models;
 using BookWorm.Repository;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -16,8 +9,7 @@ namespace BookWorm.Tests.Repository
     [TestClass]
     public class EntityFrameworkRepositoryTest
     {
-        //TODO add integration test to confirm that dbset.add returns a model with an id
-
+        
         [TestMethod]
         public void ShouldKnowToTalkToContextAndDbSetOnCreate()
         {

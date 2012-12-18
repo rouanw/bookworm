@@ -27,7 +27,7 @@ namespace BookWorm.Repository
             {
                 return (IDbSet<T>) Books;
             }
-            else if (typeof(T) == typeof(StaticPage))
+            if (typeof(T) == typeof(StaticPage))
             {
                 return (IDbSet<T>) Pages;
             }

@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System.Transactions;
+using BookWorm.Models;
 using BookWorm.Repository;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -7,10 +8,11 @@ namespace BookWorm.Tests.Repository
     public class EntityFrameworkIntegrationTest
     {
         protected TestDbContext DbContext;
+        
         // Maps to connection string in App.config
         private const string DatabaseName = "TestDatabase";
-
-        protected class TestDbContext : PukuDbContext
+        protected TransactionScope TransactionScope;
+        public class TestDbContext : PukuDbContext
         {
             public TestDbContext() : base (DatabaseName)
             {
@@ -19,16 +21,17 @@ namespace BookWorm.Tests.Repository
         }
 
         [TestInitialize]
-        public void Setup()
+        public void TestSetup()
         {
-            Database.SetInitializer(new DropCreateDatabaseAlways<TestDbContext>());
             DbContext = new TestDbContext();
+            DbContext.Database.CreateIfNotExists();
+            TransactionScope = new TransactionScope(TransactionScopeOption.RequiresNew);
         }
 
         [TestCleanup]
-        public void Cleanup()
+        public void TestCleanup()
         {
-            Database.Delete(DatabaseName);
+            TransactionScope.Dispose();
         }
     }
 }
