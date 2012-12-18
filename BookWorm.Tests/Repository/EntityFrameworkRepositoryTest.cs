@@ -1,4 +1,11 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Data.Common;
+using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
+using System.Linq.Expressions;
 using BookWorm.Models;
 using BookWorm.Repository;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -68,14 +75,14 @@ namespace BookWorm.Tests.Repository
             efRepo.Delete<Book>(book.Id);
 
             dbContext.Verify(context => context.GetDbSet<Book>(), Times.Once());
-            dbSet.Verify(set=>set.Find(book.Id), Times.Once());
-            dbSet.Verify(set=>set.Remove(book), Times.Once());
+            dbSet.Verify(set => set.Find(book.Id), Times.Once());
+            dbSet.Verify(set => set.Remove(book), Times.Once());
         }
 
         [TestMethod]
         public void ShouldKnowHowToEditAModelByItsIdWhenItExists()
         {
-            var book = new Book { Id = 1, Title = "The Book" };
+            var book = new Book {Id = 1, Title = "The Book"};
             var dbContext = new Mock<PukuDbContext>();
             dbContext.Setup(ctx => ctx.SetModified(book));
             var efRepo = new EntityFrameworkRepository(dbContext.Object);
@@ -99,7 +106,7 @@ namespace BookWorm.Tests.Repository
             Assert.IsNotNull(efRepo.GetContextInstance());
         }
 
-        public class TestRepository : EntityFrameworkRepository
+        private class TestRepository : EntityFrameworkRepository
         {
             public DbContext GetContextInstance()
             {

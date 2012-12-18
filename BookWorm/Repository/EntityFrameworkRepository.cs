@@ -1,16 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace BookWorm.Repository
 {
     public class EntityFrameworkRepository : IRepository
     {
         protected PukuDbContext _pukuDbContext;
-        public PukuDbContext PukuDbContext { get { return _pukuDbContext ?? (_pukuDbContext = new PukuDbContext()); } }
+
+        public PukuDbContext PukuDbContext
+        {
+            get { return _pukuDbContext ?? (_pukuDbContext = new PukuDbContext()); }
+        }
 
         public EntityFrameworkRepository()
         {
-        
         }
 
         public EntityFrameworkRepository(PukuDbContext pukuDbContext)
@@ -35,7 +39,7 @@ namespace BookWorm.Repository
 
         public ICollection<T> List<T>() where T : Model<T>
         {
-            throw new NotImplementedException();
+            return PukuDbContext.GetDbSet<T>().ToList();
         }
 
         public void Delete<T>(int id) where T : Model<T>
