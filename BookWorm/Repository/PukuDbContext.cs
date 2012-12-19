@@ -7,19 +7,18 @@ namespace BookWorm.Repository
 {
     public class PukuDbContext : DbContext
     {
-        protected PukuDbContext(string databaseName) : base(databaseName)
-        {
-            
-        }
+        public IDbSet<Book> Books { get; set; }
+        public IDbSet<StaticPage> Pages { get; set; }
 
         public PukuDbContext()
         {
             
         }
 
-        // TODO can this be private?
-        public IDbSet<Book> Books { get; set; }
-        public IDbSet<StaticPage> Pages { get; set; } 
+        public PukuDbContext(string databaseName) : base(databaseName)
+        {
+            
+        }
 
         public virtual IDbSet<T> GetDbSet<T>() where T : Model<T>
         {

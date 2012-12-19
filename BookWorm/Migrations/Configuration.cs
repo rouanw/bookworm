@@ -1,21 +1,17 @@
 using BookWorm.Models;
-using BookWorm.Models.Validations;
 
 namespace BookWorm.Migrations
 {
-    using System;
-    using System.Data.Entity;
     using System.Data.Entity.Migrations;
-    using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<BookWorm.Repository.PukuDbContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<Repository.PukuDbContext>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
         }
 
-        protected override void Seed(BookWorm.Repository.PukuDbContext context)
+        protected override void Seed(Repository.PukuDbContext context)
         {
             //  This method will be called after migrating to the latest version.
 
