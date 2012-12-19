@@ -56,7 +56,7 @@ namespace BookWorm.App_Start
         /// <param name="kernel">The kernel.</param>s
         private static void RegisterServices(IKernel kernel)
         {
-            kernel.Bind<IRepository>().To<Repository.Repository>().InRequestScope();
+            kernel.Bind<IRepository>().To<Repository.EntityFrameworkRepository>().InRequestScope();
         }        
     }
 }
