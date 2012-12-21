@@ -95,6 +95,9 @@
     <Reference Include="Raven.Database">
       <HintPath>..\packages\RavenDB.Database.2.0.2170-Unstable\lib\net40\Raven.Database.dll</HintPath>
     </Reference>
+    <Reference Include="Rhino.Mocks">
+      <HintPath>..\packages\RhinoMocks.3.6.1\lib\net\Rhino.Mocks.dll</HintPath>
+    </Reference>
     <Reference Include="Spatial4n.Core.NTS">
       <HintPath>..\packages\RavenDB.Database.2.0.2170-Unstable\lib\net40\Spatial4n.Core.NTS.dll</HintPath>
     </Reference>

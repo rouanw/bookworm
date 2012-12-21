@@ -2,6 +2,7 @@
 using BookWorm.Models;
 using BookWorm.Repository;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Rhino.Mocks;
 using Moq;
 
 namespace BookWorm.Tests.Repository
@@ -9,20 +10,24 @@ namespace BookWorm.Tests.Repository
     [TestClass]
     public class EntityFrameworkRepositoryTest
     {
-        
         [TestMethod]
-        public void ShouldKnowToTalkToContextAndDbSetOnCreate()
+        public void ShouldKnowToTalkToContextAndDbSetOnCreateRHINO()
         {
-            var dbContext = new Mock<PukuDbContext>();
-            var dbSet = new Mock<IDbSet<Book>>();
-            dbContext.Setup(context => context.GetDbSet<Book>()).Returns(dbSet.Object);
-            var efRepo = new EntityFrameworkRepository(dbContext.Object);
-
+            var mocks = new Rhino.Mocks.MockRepository();
+            var dbContext = mocks.StrictMock<PukuDbContext>();
+            var dbSet = mocks.StrictMock<IDbSet<Book>>();
             var newBook = new Book {Title = "Book"};
-            efRepo.Create(newBook);
-
-            dbContext.Verify(context => context.GetDbSet<Book>(), Times.Once());
-            dbSet.Verify(set => set.Add(newBook), Times.Once());
+            
+            With.Mocks(mocks).Expecting(() =>
+                {
+                    Expect.Call(dbContext.GetDbSet<Book>()).Return(dbSet);
+                    Expect.Call(dbSet.Add(newBook));
+                })
+                .Verify(() =>
+                {
+                    var efRepo = new EntityFrameworkRepository(dbContext);
+                    efRepo.Create(newBook);
+                });
         }
 
         [TestMethod]
